@@ -18,3 +18,7 @@ local.properties
 #intellij project files
 *.iml
 *.idea
+
+# seed-finder artefacts
+out.txt
+search_items.txt
