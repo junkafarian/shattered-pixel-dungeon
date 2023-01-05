@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Scanner;
 
@@ -50,11 +49,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 
 public class SeedFinder {
-	enum Condition {ANY, ALL};
+	enum Condition {
+		ANY, ALL
+	};
 
 	public static class Options {
 		public static int floors;
-		public static Condition condition; 
+		public static Condition condition;
 		public static String itemListFile;
 		public static String ouputFile;
 	}
@@ -79,7 +80,7 @@ public class SeedFinder {
 		Options.itemListFile = "search_items.txt";
 
 		if (args.length < 4)
-			Options.ouputFile = "out.txt";
+			Options.ouputFile = "seed_items.log";
 
 		else
 			Options.ouputFile = args[3];
@@ -113,8 +114,8 @@ public class SeedFinder {
 				Heap h = item.heap;
 
 				if (((i instanceof Armor && ((Armor) i).hasGoodGlyph()) ||
-					(i instanceof Weapon && ((Weapon) i).hasGoodEnchant()) ||
-					(i instanceof Ring) || (i instanceof Wand)) && i.cursed)
+						(i instanceof Weapon && ((Weapon) i).hasGoodEnchant()) ||
+						(i instanceof Ring) || (i instanceof Wand)) && i.cursed)
 					builder.append("- cursed " + i.title().toLowerCase());
 
 				else
@@ -146,7 +147,7 @@ public class SeedFinder {
 		}
 	}
 
-    public SeedFinder(String[] args) {
+	public SeedFinder(String[] args) {
 		parseArgs(args);
 		itemList = getItemList();
 
@@ -196,9 +197,12 @@ public class SeedFinder {
 				for (Item item : ((Mimic) m).items)
 					h.items.add(item.identify());
 
-				if (m instanceof GoldenMimic) h.type = Type.GOLDEN_MIMIC;
-				else if (m instanceof CrystalMimic) h.type = Type.CRYSTAL_MIMIC;
-				else h.type = Type.MIMIC;
+				if (m instanceof GoldenMimic)
+					h.type = Type.GOLDEN_MIMIC;
+				else if (m instanceof CrystalMimic)
+					h.type = Type.CRYSTAL_MIMIC;
+				else
+					h.type = Type.MIMIC;
 				heaps.add(h);
 			}
 		}
@@ -270,8 +274,9 @@ public class SeedFinder {
 		GamesInProgress.selectedClass = HeroClass.WARRIOR;
 		Dungeon.init();
 
-		blacklist = Arrays.asList(Gold.class, Dewdrop.class, IronKey.class, GoldenKey.class, CrystalKey.class, EnergyCrystal.class,
-								  CorpseDust.class, Embers.class, CeremonialCandle.class, Pickaxe.class);
+		blacklist = Arrays.asList(Gold.class, Dewdrop.class, IronKey.class, GoldenKey.class, CrystalKey.class,
+				EnergyCrystal.class,
+				CorpseDust.class, Embers.class, CeremonialCandle.class, Pickaxe.class);
 
 		out.printf("Items for seed %s (%d):\n\n", DungeonSeed.convertToCode(Dungeon.seed), Dungeon.seed);
 
@@ -308,7 +313,8 @@ public class SeedFinder {
 				builder.append("Wandmaker quest item: ");
 
 				switch (Wandmaker.Quest.type) {
-					case 1: default:
+					case 1:
+					default:
 						builder.append("corpse dust\n\n");
 						break;
 					case 2:
@@ -336,15 +342,24 @@ public class SeedFinder {
 				for (Item item : h.items) {
 					item.identify();
 
-					if (h.type == Type.FOR_SALE) continue;
-					else if (blacklist.contains(item.getClass())) continue;
-					else if (item instanceof Scroll) scrolls.add(new HeapItem(item, h));
-					else if (item instanceof Potion) potions.add(new HeapItem(item, h));
-					else if (item instanceof MeleeWeapon || item instanceof Armor) equipment.add(new HeapItem(item, h));
-					else if (item instanceof Ring) rings.add(new HeapItem(item, h));
-					else if (item instanceof Artifact) artifacts.add(new HeapItem(item, h));
-					else if (item instanceof Wand) wands.add(new HeapItem(item, h));
-					else others.add(new HeapItem(item, h));
+					if (h.type == Type.FOR_SALE)
+						continue;
+					else if (blacklist.contains(item.getClass()))
+						continue;
+					else if (item instanceof Scroll)
+						scrolls.add(new HeapItem(item, h));
+					else if (item instanceof Potion)
+						potions.add(new HeapItem(item, h));
+					else if (item instanceof MeleeWeapon || item instanceof Armor)
+						equipment.add(new HeapItem(item, h));
+					else if (item instanceof Ring)
+						rings.add(new HeapItem(item, h));
+					else if (item instanceof Artifact)
+						artifacts.add(new HeapItem(item, h));
+					else if (item instanceof Wand)
+						wands.add(new HeapItem(item, h));
+					else
+						others.add(new HeapItem(item, h));
 				}
 			}
 
@@ -362,6 +377,6 @@ public class SeedFinder {
 		}
 
 		out.close();
-    }
+	}
 
 }
