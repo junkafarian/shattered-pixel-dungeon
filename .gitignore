@@ -20,5 +20,5 @@ local.properties
 *.idea
 
 # seed-finder artefacts
-out.txt
+seed_items.log
 search_items.txt
