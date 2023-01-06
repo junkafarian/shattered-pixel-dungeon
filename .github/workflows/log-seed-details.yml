@@ -16,7 +16,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run in debug mode
-        run: ./gradlew desktop:debug
+        run: xvfb-run ./gradlew desktop:debug
       
       - name: Upload artefacts
         uses: actions/upload-artifact@v3
