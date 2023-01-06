@@ -22,4 +22,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: seed-items
-          path: seed_items.log
+          path: desktop/seed_items.log
