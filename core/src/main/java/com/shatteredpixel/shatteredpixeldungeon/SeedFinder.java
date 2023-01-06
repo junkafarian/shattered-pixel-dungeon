@@ -158,7 +158,8 @@ public class SeedFinder {
 			e.printStackTrace();
 		}
 
-		for (int i = 0; i < DungeonSeed.TOTAL_SEEDS; i++) {
+		// for (int i = 0; i < DungeonSeed.TOTAL_SEEDS; i++) {
+		for (int i = 0; i < 5000; i++) {
 			if (i % 1000 == 0) {
 				System.out.printf("Checked %s seeds\n", Integer.toString(i));
 			}
