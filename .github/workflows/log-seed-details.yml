@@ -15,11 +15,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Execute Gradle build
-        run: ./gradlew desktop:release
-      
-      - name: Check seeds
-        run: java -jar desktop/build/libs/desktop-*.jar
+      - name: Run in debug mode
+        run: ./gradlew desktop:debug
       
       - name: Upload artefacts
         uses: actions/upload-artifact@v3
