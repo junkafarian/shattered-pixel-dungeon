@@ -74,16 +74,12 @@ public class SeedFinder {
 	ArrayList<String> itemList;
 
 	// TODO: make it parse the item list directly from the arguments
-	private void parseArgs(String[] args) {
+	private void setOptions(String[] args) {
 		Options.floors = 4;
 		Options.condition = Condition.ALL;
 		Options.itemListFile = "search_items.txt";
+		Options.ouputFile = "seed_items.log";
 
-		if (args.length < 4)
-			Options.ouputFile = "seed_items.log";
-
-		else
-			Options.ouputFile = args[3];
 	}
 
 	private ArrayList<String> getItemList() {
@@ -105,50 +101,8 @@ public class SeedFinder {
 		return itemList;
 	}
 
-	private void addTextItems(String caption, ArrayList<HeapItem> items, StringBuilder builder) {
-		if (!items.isEmpty()) {
-			builder.append(caption + ":\n");
-
-			for (HeapItem item : items) {
-				Item i = item.item;
-				Heap h = item.heap;
-
-				if (((i instanceof Armor && ((Armor) i).hasGoodGlyph()) ||
-						(i instanceof Weapon && ((Weapon) i).hasGoodEnchant()) ||
-						(i instanceof Ring) || (i instanceof Wand)) && i.cursed)
-					builder.append("- cursed " + i.title().toLowerCase());
-
-				else
-					builder.append("- " + i.title().toLowerCase());
-
-				if (h.type != Type.HEAP)
-					builder.append(" (" + h.title().toLowerCase() + ")");
-
-				builder.append("\n");
-			}
-
-			builder.append("\n");
-		}
-	}
-
-	private void addTextQuest(String caption, ArrayList<Item> items, StringBuilder builder) {
-		if (!items.isEmpty()) {
-			builder.append(caption + ":\n");
-
-			for (Item i : items) {
-				if (i.cursed)
-					builder.append("- cursed " + i.title().toLowerCase() + "\n");
-
-				else
-					builder.append("- " + i.title().toLowerCase() + "\n");
-			}
-
-			builder.append("\n");
-		}
-	}
-
 	public SeedFinder(String[] args) {
-		parseArgs(args);
+		setOptions(args);
 		itemList = getItemList();
 
 		try {
@@ -169,6 +123,8 @@ public class SeedFinder {
 			}
 		}
 	}
+
+	// Finding and test logic
 
 	private ArrayList<Heap> getMobDrops(Level l) {
 		ArrayList<Heap> heaps = new ArrayList<>();
@@ -262,6 +218,55 @@ public class SeedFinder {
 		}
 	}
 
+	// Formatting and output
+
+	private void addTextItems(String caption, ArrayList<HeapItem> items, StringBuilder builder) {
+		if (items.isEmpty()) {
+			// No need to process heap
+			return;
+		}
+
+		builder.append(caption + ":\n");
+
+		for (HeapItem item : items) {
+			Item i = item.item;
+			Heap h = item.heap;
+
+			if (((i instanceof Armor && ((Armor) i).hasGoodGlyph()) ||
+					(i instanceof Weapon && ((Weapon) i).hasGoodEnchant()) ||
+					(i instanceof Ring) || (i instanceof Wand)) && i.cursed)
+				builder.append("- cursed " + i.title().toLowerCase());
+
+			else
+				builder.append("- " + i.title().toLowerCase());
+
+			if (h.type != Type.HEAP)
+				builder.append(" (" + h.title().toLowerCase() + ")");
+
+			builder.append("\n");
+		}
+
+		builder.append("\n");
+	}
+
+	private void addTextQuest(String caption, ArrayList<Item> items, StringBuilder builder) {
+		if (!items.isEmpty()) {
+			return;
+		}
+
+		builder.append(caption + ":\n");
+
+		for (Item i : items) {
+			if (i.cursed)
+				builder.append("- cursed " + i.title().toLowerCase() + "\n");
+
+			else
+				builder.append("- " + i.title().toLowerCase() + "\n");
+		}
+
+		builder.append("\n");
+	}
+
 	private void logSeedItems(String seed, int floors) {
 		PrintWriter out = null;
 
@@ -276,8 +281,7 @@ public class SeedFinder {
 		Dungeon.init();
 
 		blacklist = Arrays.asList(Gold.class, Dewdrop.class, IronKey.class, GoldenKey.class, CrystalKey.class,
-				EnergyCrystal.class,
-				CorpseDust.class, Embers.class, CeremonialCandle.class, Pickaxe.class);
+				EnergyCrystal.class, CorpseDust.class, Embers.class, CeremonialCandle.class, Pickaxe.class);
 
 		out.printf("Items for seed %s (%d):\n\n", DungeonSeed.convertToCode(Dungeon.seed), Dungeon.seed);
 
