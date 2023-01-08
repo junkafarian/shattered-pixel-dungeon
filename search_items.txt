@@ -1,0 +1,8 @@
+ring of [a-z\s]+ \+2
+ring of [a-z\s]+ \+3
+wand of [a-z\s]+ \+2
+wand of [a-z\s]+ \+3
+armor \+2
+armor \+3
+armor of [a-z\s]+ \+2
+armor of [a-z\s]+ \+3
