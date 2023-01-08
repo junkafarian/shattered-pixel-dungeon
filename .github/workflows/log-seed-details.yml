@@ -15,8 +15,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Generate release 
+        run: ./gradlew desktop:release
+      
       - name: Run in debug mode
-        run: xvfb-run ./gradlew desktop:debug
+        run: xvfb-run java -jar desktop/build/libs/desktop-*.jar
       
       - name: Upload artefacts
         uses: actions/upload-artifact@v3
